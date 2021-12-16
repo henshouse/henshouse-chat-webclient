@@ -5,8 +5,18 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Chatroom</title>
-		<link rel="stylesheet" href="main.css" />
 		<link rel="stylesheet" href="reset.css" />
+		<link rel="stylesheet" href="main.css" />
+		<link rel="stylesheet" href="scrollbar.css" />
+		
+		<!--Import libraries-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="lib/OpenCrypto.min.js"></script>
+
+		<!--My code-->
+		<script src="constants.js"></script>
+		<script src="gui.js"></script>
+		<script src="client.js"></script>
 		<script src="main.js"></script>
 	</head>
 	<body>
@@ -15,14 +25,30 @@
 				<div class="main-content">
 					<div class="connect-area">
 						<div class="input-container">
-							<b>Server Address</b>
-							<input type="text" name="server-addr" id="server-addr-inp" />
-							<b>Server Port</b>
-							<input type="text" name="server-port" id="server-port-inp" />
+							<div class="input-area-server input">
+								<b class="input-label">Server Address</b>
+								<input
+									type="text"
+									name="server-addr"
+									id="server-addr-inp"
+									class="connect-input"
+								/>
+							</div>
+							<div class="input-area-port input">
+								<b class="input-label">Server Port</b>
+								<input
+									type="text"
+									name="server-port"
+									id="server-port-inp"
+									class="connect-input"
+								/>
+							</div>
+							<div class="nick-area">Gay Nigga</div>
 						</div>
 					</div>
-					<div class="text-area" id="main-chat-area">gay<br />gay</div>
-					<div>
+					<div class="text-area" id="main-chat-area"></div>
+					<div class="message-area">
+						<div class="arrow-center-horizontal">>>></div>
 						<input type="text" name="message" id="msg-inp" />
 					</div>
 				</div>
