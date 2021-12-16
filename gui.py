@@ -42,6 +42,10 @@ class Program:
 
         self.client = None
 
+        self.run()
+
+    def run(self):
+
         while True:
             event, values = self.window.read()
             # End program if user closes window or
@@ -68,6 +72,7 @@ class Program:
             self.gui_queue.clear()
 
         self.window.close()
+
     def connect(self, ip, port):
         try:
             self.disconnect()
@@ -75,7 +80,7 @@ class Program:
             self.set_nick(self.client.nick)
         except Exception as e:
             sg.PopupError('Can\'t connect')
-            
+
     def disconnect(self):
         if self.client:
             self.client.running = False
@@ -87,7 +92,7 @@ class Program:
 
     def is_connected(self):
         return bool(self.client)
-    
+
     def execute(self, to_do):
         self.gui_queue += to_do
 
