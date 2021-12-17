@@ -19,15 +19,14 @@ class Asymmetric:
         self.can_decrypt = None
 
     @staticmethod
-    def new(lenght=2048) -> Asymmetric:
+    def new() -> Asymmetric:
         key = Asymmetric()
 
-        key.lenght = lenght
         # key.rsa_private_key = RSA.generate(key.lenght)
         # key.rsa_public_key = key.private_key.public_key()
         # key.private_key = PKCS1_OAEP.new(key.rsa_private_key)
         # key.public_key = PKCS1_OAEP.new(key.rsa_public_key)
-        rsa_private_key = RSA.generate(key.lenght)
+        rsa_private_key = RSA.generate(2048)
         rsa_public_key = rsa_private_key.public_key()
 
         key.private_key = PKCS1_OAEP.new(
@@ -43,25 +42,24 @@ class Asymmetric:
                     private: Union[None, PKCS1_OAEP.PKCS1OAEP_Cipher, bytes] = None) -> Asymmetric:
         key = Asymmetric()
 
-        # if type(public) == bytes:
-        #     key.rsa_public_key = RSA.import_key(public)
-        # else:
-        #     key.rsa_public_key = public
-        # key.public_key = PKCS1_OAEP.new(key.rsa_public_key)
+        def new_pkcs(_key: PKCS1_OAEP.PKCS1OAEP_Cipher) -> PKCS1_OAEP.PKCS1OAEP_Cipher:
+            return PKCS1_OAEP.new(RSA.import_key(
+                _key), SHA256, lambda x, y: pss.MGF1(x, y, SHA256))
 
-        # key.can_decrypt = False
-        # if private is not None:
-        #     if type(private) == bytes:
-        #         key.rsa_private_key = RSA.import_key(private)
-        #     else:
-        #         key.rsa_private_key = private
-        #     key.private_key = PKCS1_OAEP.new(key.rsa_private_key)
-        #     key.can_decrypt = True
+        def get_key(_key: Union[PKCS1_OAEP.PKCS1OAEP_Cipher, bytes]) -> PKCS1_OAEP.PKCS1OAEP_Cipher:
+            return _key if isinstance(
+                _key, PKCS1_OAEP.PKCS1OAEP_Cipher) else new_pkcs(_key)
 
-        # key.public_key = public if isinstance(public, PKCS1_OAEP.PKCS1OAEP_Cipher) else PKCS1_OAEP.new(
-        #     RSA.import_key(public), hashAlgo=SHA512, mgfunc=lambda x, y: pss.MGF1(x, y, SHA512))
-        key.public_key = public if isinstance(
-            public, PKCS1_OAEP.PKCS1OAEP_Cipher) else PKCS1_OAEP.new(RSA.import_key(public), SHA256, lambda x, y: pss.MGF1(x, y, SHA256))
+        # key.public_key = public if isinstance(public, PKCS1_OAEP.PKCS1OAEP_Cipher) else \
+        #     new_pkcs(public)
+        key.public_key = get_key(public)
+        # PKCS1_OAEP.new(RSA.import_key(public), SHA256, lambda x, y: pss.MGF1(x, y, SHA256))
+        key.can_decrypt = False
+        if private:
+            # key.private_key = private if isinstance(private, PKCS1_OAEP.PKCS1_OAEP.PKCS1OAEP_Cipher) else PKCS1_OAEP.new(
+            #     RSA.import_key(private), SHA256, lambda x, y: pss.MGF1(x, y, SHA256))
+            key.private_key = get_key(private)
+            key.can_decrypt = True
 
         return key
 

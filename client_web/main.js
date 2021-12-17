@@ -10,6 +10,4 @@ client.init().then(() => {
 	let gui = new Gui(null, null, client);
 	client.setnick = (me) => (gui.nick = me);
 	client.onmsg = (nick, content) => gui.recv_msg(nick, content);
-
-	// client.setnick(nick);
 });

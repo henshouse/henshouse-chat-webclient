@@ -1,6 +1,5 @@
 # region imports
 from threading import Thread
-from datetime import datetime
 from time import sleep
 import os
 import signal
@@ -30,7 +29,6 @@ class Server:
 
         self.local_asym = Asymmetric.new()
 
-        # self.sock = sc.socket(sc.AF_INET, sc.SOCK_STREAM)
         log_start()
         asyncio.run(self.run_server())
 
@@ -57,8 +55,6 @@ class Server:
             nonlocal n
             nick = str(n)
             n += 1
-            # conn = Connection.new(
-            #     wsock, wsock.remote_address[0], self, nick)
             conn = Connection(wsock, wsock.remote_address[0], self, nick)
             self.conns.append(conn)
             await conn.run()
@@ -79,9 +75,9 @@ class Server:
     async def send_to_all(self, msg, author: Union[Connection, str]):
         msg = (author.nick if isinstance(author, Connection)
                else author) + NAME_SPLITTER + msg
+        to_remove = []
         for conn in self.conns:
             msg_with_me = conn.nick + NAME_SPLITTER + msg
-            to_remove = []
             try:
                 await conn.send_str(msg_with_me)
             except ws.exceptions.ConnectionClosedOK:
@@ -110,7 +106,6 @@ def get_ip():
     import socket as sc
     sock = sc.socket(sc.AF_INET, sc.SOCK_DGRAM)
     sock.connect(("8.8.8.8", 80))
-    # print("[*] Write this IP to other computers: " + sock.getsockname()[0])
     server = sock.getsockname()[0]
     sock.close()
     sleep(0.5)

@@ -6,13 +6,11 @@ body {
 	background-color: #1e1e1e;
 	color: lightgrey;
 	font-family: consolas;
-	/* width: 100%; */
 	height: 100%;
 }
 
 .center-main-content {
 	display: flex;
-	/* align-items: center; */
 	justify-content: center;
 	height: 100%;
 	margin: auto;
@@ -22,7 +20,6 @@ body {
 	padding: 20px;
 	max-width: 1200px;
 	width: 100%;
-	/* width: 1200px; */
 	height: 100%;
 }
 
@@ -42,6 +39,7 @@ body {
 	color: lightgrey;
 	padding: 0px 10px;
 	transition-duration: 300ms;
+	max-width: 150px;
 }
 
 .connect-input:focus {
@@ -66,8 +64,8 @@ body {
 }
 #msg-inp {
 	width: 100%;
-	background-color: #2e2e2e;
-	border: 1px dashed #1e1e1e;
+	background-color: #3e3e3e;
+	border: 2px dashed purple;
 	border-radius: 50px;
 	outline: none;
 	color: lightgrey;
@@ -94,7 +92,7 @@ input[type="text"]:focus {
 }
 
 #msg-inp:focus {
-	background-color: #3e3e3e;
+	background-color: #1e1e1e;
 }
 
 .nick-area {

@@ -8,7 +8,6 @@ class Gui {
         this.client = client;
         this.msgarea
             .on("keydown", (e) => {
-                // if (e.key == "Enter") this.recv_msg(this.nickarea.text(), this.msgarea.val());
                 if (e.key == 'Enter') this.send_msg(this.msgarea.val());
             });
 	}
@@ -23,13 +22,10 @@ class Gui {
     }
 
     set nick(value) {
-        // console.log("new nick");
         this.nickarea.text(value)
     }
 
     async send_msg(msg) {
-        // console.log("sending msg");
-        // await this.client.send(msg);
         await this.client.send_str(msg);
         this.msgarea.val("");
     }
