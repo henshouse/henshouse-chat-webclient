@@ -23,12 +23,12 @@ class Gui {
     }
 
     set nick(value) {
-        console.log("new nick");
+        // console.log("new nick");
         this.nickarea.text(value)
     }
 
     async send_msg(msg) {
-        console.log("sending msg");
+        // console.log("sending msg");
         await this.client.send(msg);
         this.msgarea.val("");
     }

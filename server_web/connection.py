@@ -42,15 +42,17 @@ class Connection:
 
     async def close(self):
         await self.ws.close()
-        print(f'before: {self.server.conns}')
+        # print(f'before: {self.server.conns}')
         self.server.conns.remove(self)
-        print(f'after: {self.server.conns}')
+        # print(f'after: {self.server.conns}')
         log_disconnect(self.addr, self.nick)
 
     async def run(self):
         import traceback
         try:
-            await self.send(self.server.local_asym.export_public())
+            key = self.server.local_asym.export_public()
+            # print(f'key: {key}')
+            await self.send(key)
             self.remote_asym = Asymmetric.import_from(await self.recv())
             await self.send(self.nick)
             async for msg_en in self.ws:

@@ -43,7 +43,7 @@ class Server:
                         os.kill(os.getpid(), signal.SIGINT)
                     elif cmd == 'help':
                         print(
-                            f'> enter any of "q", "quit", ":q", ":q!", "exit" and press enter to quit')
+                            f'> enter any of "q", "quit", ":q", ":q!" or "exit" and press enter to quit')
                     else:
                         print(f'[!] Command unknown')
             except EOFError:
