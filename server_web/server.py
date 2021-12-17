@@ -88,6 +88,7 @@ class Server:
                 to_remove.append(conn)
         for conn in to_remove:
             self.conns.remove(conn)
+            await conn.close()
 
             
     async def send_to_all_raw(self, msg, author: Union[Connection, str]):
@@ -102,6 +103,7 @@ class Server:
                 to_remove.append(conn)
         for conn in to_remove:
             self.conns.remove(conn)
+            await conn.close()
 
 
 def get_ip():

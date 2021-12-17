@@ -2,8 +2,9 @@ from __future__ import annotations
 from Crypto.PublicKey import RSA
 from Crypto.Random import get_random_bytes
 from Crypto.Cipher import AES, PKCS1_v1_5, PKCS1_OAEP
-from Crypto.Hash import BLAKE2b
+from Crypto.Hash import BLAKE2b, SHA512, SHA1, SHA256
 from Crypto.Protocol.KDF import scrypt
+from Crypto.Signature import pss
 import config as cfg
 from typing import Tuple, Union
 from os import urandom
@@ -28,15 +29,18 @@ class Asymmetric:
         # key.public_key = PKCS1_OAEP.new(key.rsa_public_key)
         rsa_private_key = RSA.generate(key.lenght)
         rsa_public_key = rsa_private_key.public_key()
-        
-        key.private_key = PKCS1_OAEP.new(rsa_private_key)
-        key.public_key = PKCS1_OAEP.new(rsa_public_key)
+
+        key.private_key = PKCS1_OAEP.new(
+            rsa_private_key, SHA256)
+        key.public_key = PKCS1_OAEP.new(
+            rsa_public_key, SHA256)
         key.can_decrypt = True
 
         return key
 
     @staticmethod
-    def import_from(public: Union[PKCS1_OAEP.PKCS1OAEP_Cipher, bytes], private: Union[None, PKCS1_OAEP.PKCS1OAEP_Cipher, bytes] = None) -> Asymmetric:
+    def import_from(public: Union[PKCS1_OAEP.PKCS1OAEP_Cipher, bytes],
+                    private: Union[None, PKCS1_OAEP.PKCS1OAEP_Cipher, bytes] = None) -> Asymmetric:
         key = Asymmetric()
 
         # if type(public) == bytes:
@@ -54,7 +58,10 @@ class Asymmetric:
         #     key.private_key = PKCS1_OAEP.new(key.rsa_private_key)
         #     key.can_decrypt = True
 
-        key.public_key = public if isinstance(public, PKCS1_OAEP.PKCS1OAEP_Cipher) else PKCS1_OAEP.new(RSA.import_key(public))
+        # key.public_key = public if isinstance(public, PKCS1_OAEP.PKCS1OAEP_Cipher) else PKCS1_OAEP.new(
+        #     RSA.import_key(public), hashAlgo=SHA512, mgfunc=lambda x, y: pss.MGF1(x, y, SHA512))
+        key.public_key = public if isinstance(
+            public, PKCS1_OAEP.PKCS1OAEP_Cipher) else PKCS1_OAEP.new(RSA.import_key(public), SHA256, lambda x, y: pss.MGF1(x, y, SHA256))
 
         return key
 
@@ -74,7 +81,7 @@ class Asymmetric:
             return (self.rsa_public_key.export_key(), None)
 
     def export_public(self) -> bytes:
-        return self.public_key._key.export_key()
+        return self.public_key._key.export_key('DER')
 
 
 class Symmetric:

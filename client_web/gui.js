@@ -29,7 +29,8 @@ class Gui {
 
     async send_msg(msg) {
         // console.log("sending msg");
-        await this.client.send(msg);
+        // await this.client.send(msg);
+        await this.client.send_str(msg);
         this.msgarea.val("");
     }
 }

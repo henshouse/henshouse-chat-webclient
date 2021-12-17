@@ -1,14 +1,11 @@
 from threading import Thread
-from datetime import datetime
-from typing import Union
+# from datetime import datetime
+# from typing import Union
 import websockets as ws
 import asyncio
 
 from log import log_message, log_disconnect, log
 from security import Symmetric, Asymmetric, Hash
-from constants import MSG_ZFILL, ENCODING
-from security import Symmetric, Asymmetric, Hash
-# from server import Server
 
 
 class Connection:
@@ -22,7 +19,7 @@ class Connection:
         Thread.__init__(self)
         self.ws = ws
         self.addr = addr
-        print(f'[*] New Connection {self.addr}')
+        # print(f'[*] New Connection {self.addr}')
 
         self.server = server
 
@@ -38,39 +35,39 @@ class Connection:
         return self.server.local_asym.decrypt(await self.recv())
 
     async def send_str(self, msg: str):
-        return await self.send(self.server.local_asym.encrypt(msg))
+        return await self.send(self.remote_asym.encrypt(msg))
 
-    async def close(self):
+    async def close(self, error: str = None):
         await self.ws.close()
-        # print(f'before: {self.server.conns}')
-        self.server.conns.remove(self)
-        # print(f'after: {self.server.conns}')
-        log_disconnect(self.addr, self.nick)
+        log_disconnect(self.addr, self.nick, reason=f'Error: {error}')
 
     async def run(self):
-        import traceback
         try:
             key = self.server.local_asym.export_public()
-            # print(f'key: {key}')
+            print(f'key: {key}')
             await self.send(key)
             self.remote_asym = Asymmetric.import_from(await self.recv())
             await self.send(self.nick)
             async for msg_en in self.ws:
-                # msg = self.server.local_asym.decrypt(msg_en)
-                msg = msg_en
-                # print(f'[*][{datetime.now()}]  ' + self.nick + ' > ' + msg)
+                print(msg_en);
+                print('decrypting key')
+                msg = self.server.local_asym.decrypt(msg_en)
+                # msg = msg_en
                 # _msg = msg.replace('  ', ' ')
                 # while '  ' in _msg:
                 #     _msg = _msg.replace('  ', ' ')
-                if msg.split(' ')[0].lower() == '/nick' and len(msg.split(' ')) > 1:
+                print('checking nick')
+                if msg.split(' ')[0] == '/nick' and len(msg.split(' ')) > 1:
                     self.nick = msg.split(' ')[1]
-                await self.server.send_to_all_raw(msg, self)
+                # await self.server.send_to_all_raw(msg, self)
+                print('sending to all')
+                await self.server.send_to_all(msg, self)
                 log_message(self.nick, self.addr, msg)
         except ws.exceptions.ConnectionClosedOK as e:
-            print('connection ok closed')
-            print(e)
+            # print('connection ok closed')
+            # print(e)
             # print(e.with_traceback())
-            traceback.print_exc()
+            # traceback.print_exc()
             # print(f'[*] {self.addr} Connection closed')
             await self.close()
         except Exception as e:
