@@ -3,7 +3,7 @@ dist/
 build/
 *.spec
 test_*.py
-*__pycache__/
+*__pycache__*
 msgs.log
 node_modules
 *.zip
