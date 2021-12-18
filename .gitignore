@@ -2,3 +2,8 @@ venv/
 dist/
 build/
 *.spec
+test_*.py
+*__pycache__/
+msgs.log
+node_modules
+*.zip

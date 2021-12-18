@@ -66,7 +66,7 @@ class Connection(Thread):
                 if _msg.split(' ')[0].lower() == '/nick' and len(_msg.split(' ')) > 1:
                     self.nick = _msg.split(' ')[1]
                 self.server.send_to_all(msg, self)
-                log_message(self, msg)
+                # log_message(self, msg)
         except ConnectionResetError:
             print(f'[!][{datetime.now()}] Connection error, closing connection')
             close()
