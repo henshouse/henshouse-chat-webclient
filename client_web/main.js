@@ -1,13 +1,34 @@
-let gui;
-let client = new Client(
-	"10.0.1.17",
-	25017,
-	(_, __) => {},
-	(_) => {}
-);
-client.init().then(() => {
-	// Create gui handler and add events to client
-	let gui = new Gui(null, null, client);
-	client.setnick = (me) => (gui.nick = me);
-	client.onmsg = (nick, content) => gui.recv_msg(nick, content);
+$(() => {
+	let gui = new Gui(disconnect, connect, (_) => {});
+	let client;
+
+	async function connect(ip, port) {
+		disconnect()
+
+		client = new Client(
+			ip,
+			port,
+			(_, __) => {},
+			(_) => {},
+			disconnect
+		);
+
+		await client.init();
+
+		gui.send = (msg) => Client.prototype.send_str.call(client, msg)
+ 
+		// Create gui handler and add events to client
+		client.setnick = (me) => (gui.nick = me);
+		client.onmsg = (nick, content) => gui.recv_msg(nick, content);
+	}
+
+	async function disconnect() {
+		client = null;
+		gui.disconnect = () => {};
+		gui.send = () => {};
+		gui.clear();
+		gui.nick = "";
+
+		alert("Disconnected");
+	}
 });

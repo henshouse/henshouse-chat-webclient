@@ -14,8 +14,6 @@ from security import Symmetric, Asymmetric, Hash
 from log import log_connect, log_start, log_disconnect, log
 # endregion
 
-Symmetric
-
 
 class Server:
     def __init__(self, ip: str, port: int, max_conn: int = -1):
@@ -79,14 +77,14 @@ class Server:
         for conn in self.conns:
             msg_with_me = conn.nick + NAME_SPLITTER + msg
             try:
-                await conn.send_str(msg_with_me)
+                await conn.send_str_sym(msg_with_me)
             except ws.exceptions.ConnectionClosedOK:
                 to_remove.append(conn)
         for conn in to_remove:
-            self.conns.remove(conn)
+            if conn in self.conns:
+                self.conns.remove(conn)
             await conn.close()
 
-            
     async def send_to_all_raw(self, msg, author: Union[Connection, str]):
         msg = (author.nick if isinstance(author, Connection)
                else author) + NAME_SPLITTER + msg
@@ -98,7 +96,8 @@ class Server:
             except ws.exceptions.ConnectionClosedOK:
                 to_remove.append(conn)
         for conn in to_remove:
-            self.conns.remove(conn)
+            if conn in self.conns:
+                self.conns.remove(conn)
             await conn.close()
 
 

@@ -14,18 +14,12 @@ class Asymmetric:
     def __init__(self):
         self.public_key: RSA.RsaKey = None
         self.private_key: RSA.RsaKey = None
-        # self.rsa_public_key = None
-        # self.rsa_private_key = None
         self.can_decrypt = None
 
     @staticmethod
     def new() -> Asymmetric:
         key = Asymmetric()
 
-        # key.rsa_private_key = RSA.generate(key.lenght)
-        # key.rsa_public_key = key.private_key.public_key()
-        # key.private_key = PKCS1_OAEP.new(key.rsa_private_key)
-        # key.public_key = PKCS1_OAEP.new(key.rsa_public_key)
         rsa_private_key = RSA.generate(2048)
         rsa_public_key = rsa_private_key.public_key()
 
@@ -50,14 +44,9 @@ class Asymmetric:
             return _key if isinstance(
                 _key, PKCS1_OAEP.PKCS1OAEP_Cipher) else new_pkcs(_key)
 
-        # key.public_key = public if isinstance(public, PKCS1_OAEP.PKCS1OAEP_Cipher) else \
-        #     new_pkcs(public)
         key.public_key = get_key(public)
-        # PKCS1_OAEP.new(RSA.import_key(public), SHA256, lambda x, y: pss.MGF1(x, y, SHA256))
         key.can_decrypt = False
         if private:
-            # key.private_key = private if isinstance(private, PKCS1_OAEP.PKCS1_OAEP.PKCS1OAEP_Cipher) else PKCS1_OAEP.new(
-            #     RSA.import_key(private), SHA256, lambda x, y: pss.MGF1(x, y, SHA256))
             key.private_key = get_key(private)
             key.can_decrypt = True
 
@@ -65,6 +54,9 @@ class Asymmetric:
 
     def encrypt(self, msg: str) -> bytes:
         return self.public_key.encrypt(msg.encode(encoding=cfg.get_encoding()))
+
+    def encrypt_bytes(self, msg: bytes) -> bytes:
+        return self.public_key.encrypt(msg)
 
     def decrypt(self, data: bytes) -> str:
         if self.can_decrypt:
@@ -94,7 +86,8 @@ class Symmetric:
         if nonce:
             self.aes = AES.new(self.key, cfg.get_aes_mode(), nonce=nonce)
         else:
-            self.aes = AES.new(self.key, cfg.get_aes_mode())
+            self.aes = AES.new(self.key, cfg.get_aes_mode(),
+                               nonce=get_random_bytes(12))
 
     def encrypt(self, msg: str) -> bytes:
         """
@@ -107,16 +100,17 @@ class Symmetric:
 
         encrypted, tag = self.aes.encrypt_and_digest(
             msg.encode(encoding=cfg.get_encoding()))
-        # print(f'tag len: {len(tag)}, nonce len: {len(self.aes.nonce)}, encrypted len: {len(encrypted)}')
-        return self.aes.nonce + tag + encrypted
+        return self.aes.nonce + encrypted + tag
 
     def decrypt(self, data: bytes) -> str:
-        nonce = data[0:16]
+        nonce = data[0:12]
         self._create_new(nonce)
-        tag = data[16:32]
-        encryped = data[32:]
+        # tag = data[12:12+16]
+        # encryped = data[12+16:]
+        tag = data[-16:]
+        encrypted = data[12:-16]
         msg = self.aes.decrypt_and_verify(
-            encryped, tag).decode(encoding=cfg.get_encoding())
+            encrypted, tag).decode(encoding=cfg.get_encoding())
         return msg
 
 
@@ -132,5 +126,4 @@ class Hash:
     @staticmethod
     def hash_passwd(passwd: str) -> bytes:
         salt = urandom(cfg.get_scrypt_salt_size())
-        # noinspection PyTypeChecker
         return salt + scrypt(passwd, salt, N=2**14, r=8, p=1, key_len=cfg.get_scrypt_key_len())

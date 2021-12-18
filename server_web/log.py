@@ -23,9 +23,16 @@ def log_start():
     log('Server started')
 
 
-def log_connect(addr: Tuple[str, int], nick: str):
-    log(f'User {addr} ({nick}) connected', LogType.INFO)
+def log_connect(addr: Union[Tuple[str, int], str], nick: str):
+    if isinstance(addr, str):
+        log(f'User ({addr}) ({nick}) connected', LogType.INFO)
+    else:
+        log(f'User {addr} ({nick}) connected', LogType.INFO)
 
 
 def log_disconnect(addr: Union[Tuple[str, int], str], nick: str, reason: str = None):
-    log(f'User {addr} ({nick}) disconnected', LogType.INFO)
+    reason = '' if not reason else ', reason: ' + reason
+    if isinstance(addr, str):
+        log(f'User ({addr}) ({nick}) disconnected' + reason, LogType.INFO)
+    else:
+        log(f'User {addr} ({nick}) disconnected' + reason, LogType.INFO)
