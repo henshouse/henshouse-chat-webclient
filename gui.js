@@ -7,7 +7,7 @@ class Gui {
 		this.port_input = $(".port-input");
 		this.disconnect = disconnect;
 		this.connect = connect;
-		this.input_color = "purple";
+		this.input_color = "rgb(77, 166, 255)";
 		this.input_color_invalid = "red";
 		this.connect_button = $(".connect-button");
 		// this.client = client;
@@ -17,12 +17,10 @@ class Gui {
 		});
 
 		this.ip_input.on("input propertyChange", async (e) => {
-
 			this.check_ip(e.target.value);
 		});
 
 		this.port_input.on("input propertyChange", async (e) => {
-
 			this.check_port(e.target.value);
 		});
 

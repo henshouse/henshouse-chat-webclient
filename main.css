@@ -13,7 +13,7 @@ body {
 	--backgrounf-dark-3: 383838;
 	--background-light-1: #717171;
 
-	--main-color: red;
+	--main-color: rgb(77, 166, 255);
 }
 
 .center-main-content {
@@ -42,7 +42,7 @@ body {
 .connect-input {
 	background-color: #2e2e2e;
 	border: 2px solid #1e1e1e;
-	border-radius: 15px;
+	border-radius: 8px;
 	color: lightgrey;
 	padding: 0px 10px;
 	transition-duration: 300ms;
@@ -57,7 +57,7 @@ input[type="button"] {
 	background-color: #2e2e2e;
 	/* border: solid 2px purple; */
 	border: solid 2px #3e3e3e;
-	border-radius: 20px;
+	border-radius: 8px;
 	color: whitesmoke;
 	transition-duration: 100ms;
 	width: 130px;
@@ -67,12 +67,12 @@ input[type="button"] {
 input[type="button"]:hover {
 	/* background-color: purple; */
 	background-color: #3e3e3e;
-	border-color: purple;
+	border-color: rgb(77, 166, 255);
 	color: whitesmoke;
 }
 
 input[type="button"]:active {
-	background-color: purple;
+	background-color: rgb(77, 166, 255);
 }
 
 .connect-disconnect-container {
@@ -112,7 +112,7 @@ input[type="button"]:active {
 }
 
 input[type="text"]:focus {
-	border-color: purple;
+	border-color: rgb(77, 166, 255);
 	background-color: #1e1e1e;
 	outline: none;
 }
