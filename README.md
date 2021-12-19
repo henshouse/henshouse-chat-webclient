@@ -15,4 +15,4 @@
 * Programming - server: Mikuláš Jan Honys
 * Management: Filip Komárek
 * Website: Filip Komárek
-* Design Advice: titor
+* Design Advice - web client: titor
