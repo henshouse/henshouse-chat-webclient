@@ -22,7 +22,6 @@ class Asymmetric:
 
         rsa_private_key = RSA.generate(2048)
         rsa_public_key = rsa_private_key.public_key()
-
         key.private_key = PKCS1_OAEP.new(
             rsa_private_key, SHA256)
         key.public_key = PKCS1_OAEP.new(

@@ -4,6 +4,6 @@ build/
 *.spec
 test_*.py
 *__pycache__*
-msgs.log
+*.log
 node_modules
 *.zip

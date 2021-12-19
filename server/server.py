@@ -10,8 +10,8 @@ import websockets as ws
 
 from constants import NAME_SPLITTER, VERSION, PORT
 from connection import Connection
-from security import Symmetric, Asymmetric, Hash
-from log import log_connect, log_start, log_disconnect, log
+from security import Asymmetric
+from log import log_start, log
 # endregion
 
 
