@@ -1,8 +1,8 @@
 # chatroom
 
 ## Our public server
-*ip: 34.118.7.179
-*port: 25017
+* ip: 34.118.7.179
+* port: 25017
 
 ## Credits
 * Programming - client: Mikuláš Jan Honys
