@@ -1,4 +1,9 @@
-# chatroom
+# Henhouse chat
+
+## Downloads
+* web client: https://github.com/henshouse/henshouse-chat-webclient/releases
+* CLI client: coming soon
+* server: https://github.com/henshouse/henshouse-chat-server/releases
 
 ## Our public server
 * ip: 34.118.7.179
