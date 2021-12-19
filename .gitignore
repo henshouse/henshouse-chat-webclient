@@ -1,9 +1,2 @@
-venv/
-dist/
-build/
-*.spec
-test_*.py
-*__pycache__*
-*.log
 node_modules
 *.zip
