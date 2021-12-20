@@ -5,13 +5,16 @@ class Gui {
 		this.msgarea = $("#msg-inp");
 		this.ip_input = $(".ip-input");
 		this.port_input = $(".port-input");
+		this.connect_button = $(".connect-button");
+		this.status_dot = $(".status-dot");
+
 		this.disconnect = disconnect;
 		this.connect = connect;
+		this.send = send;
+
 		this.input_color = "rgb(77, 166, 255)";
 		this.input_color_invalid = "red";
-		this.connect_button = $(".connect-button");
-		// this.client = client;
-		this.send = send;
+		
 		this.msgarea.on("keydown", (e) => {
 			if (e.key == "Enter") this.send_msg(this.msgarea.val());
 		});
@@ -26,11 +29,19 @@ class Gui {
 
 		this.connect_button.on("click", (ev) => {
 			if (this.check_legal()) {
-				this.connect(this.ip_input.val(), this.port_input.val());
+				if (this.connect(this.ip_input.val(), this.port_input.val())) {
+					this.status_dot.css("background-color", "lime");
+				} else {
+					this.show_disconnect();
+				}
 			} else {
 				alert("Invalid Parameters");
 			}
 		});
+	}
+
+	show_disconnect() {
+		this.status_dot.css("background-color", "red");
 	}
 
 	check_legal() {
@@ -63,7 +74,7 @@ class Gui {
 	}
 
 	recv_msg(nick, msg) {
-		console.log("recv msg");
+		// console.log("recv msg");
 		this.textarea.html(
 			this.textarea.html() + `<span class="msg-nick">${nick}</span> > ${msg}<br>`
 		);

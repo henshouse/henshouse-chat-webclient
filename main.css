@@ -79,6 +79,17 @@ input[type="button"]:active {
 
 .connect-disconnect-container {
 	margin-left: auto;
+	flex-direction: row;
+	display: flex;
+	align-items: center;
+}
+
+.status-dot {
+	background-color: red;
+	width: 10px;
+	height: 10px;
+	margin-right: 7px;
+	border-radius: 50%;
 }
 
 .input-container {
@@ -108,6 +119,7 @@ input[type="button"]:active {
 	flex-direction: column;
 	justify-content: center;
 	font-weight: 1000;
+	color: rgb(77, 166, 255);
 }
 
 input[type="text"]:focus {
