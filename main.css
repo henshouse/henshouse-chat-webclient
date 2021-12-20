@@ -6,6 +6,8 @@ body {
 	background-color: #1e1e1e;
 	color: lightgrey;
 	font-family: consolas;
+	/* font-family: Arial, Helvetica, sans-serif; */
+	font-weight: 700;
 	height: 100%;
 	--input-background: #121212;
 	--background-dark-1: #181818;
@@ -79,9 +81,6 @@ input[type="button"]:active {
 	margin-left: auto;
 }
 
-.connect-input:focus {
-}
-
 .input-container {
 	display: flex;
 }
@@ -130,13 +129,6 @@ input[type="text"]:focus {
 	transition-duration: 200ms;
 	margin-left: 10px;
 }
-/* #msg-inp::hover {
-	background-color: #1e1e1e;
-	content: "gay";
-	width: 100%;
-	height: 1px;
-	background-color: purple;
-}*/
 
 .input-area {
 	display: flex;
