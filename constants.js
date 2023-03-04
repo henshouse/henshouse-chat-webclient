@@ -1,1 +1,1 @@
-const NAME_SPLITTER = ":/\\:";
+export const NAME_SPLITTER = ":/\\:";

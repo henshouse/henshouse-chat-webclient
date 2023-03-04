@@ -1,4 +1,4 @@
-class Asymmetric {
+export class Asymmetric {
 	public = null;
 	private = null;
 
@@ -57,7 +57,7 @@ class Asymmetric {
 	}
 }
 
-class Symmetric {
+export class Symmetric {
 	key = null;
 	constructor(key) {
 		if (key) {

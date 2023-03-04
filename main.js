@@ -1,3 +1,6 @@
+import Client from "./client.js";
+import Gui from "./gui.js";
+
 $(() => {
 	let gui = new Gui(disconnect, connect, (_) => {});
 	let client;
@@ -17,10 +20,10 @@ $(() => {
 
 			gui.send = (msg) => Client.prototype.send_str.call(client, msg);
 
-			// Create gui handler and add events to client
+			// Create gui handler and add events to the client
 			client.setnick = (me) => (gui.nick = me);
 			client.onmsg = (nick, content) => gui.recv_msg(nick, content);
-			alert("Connected")
+			alert("Connected");
 			return true;
 		} catch (e) {
 			console.log(e);
@@ -31,7 +34,7 @@ $(() => {
 	async function disconnect() {
 		if (client === null) {
 			client = null;
-			gui.disconnect = () => {};
+			gui._disconnect = () => {};
 			gui.send = () => {};
 			gui.clear();
 			gui.nick = "";

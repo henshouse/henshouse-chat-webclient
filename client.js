@@ -1,4 +1,7 @@
-class Client {
+import { NAME_SPLITTER } from "./constants.js";
+import { Asymmetric, Symmetric } from "./security.js";
+
+export default class Client {
 	constructor(ip, port, onmsg, setnick, disconnect) {
 		this.ip = ip;
 		this.port = port;
@@ -45,7 +48,7 @@ class Client {
 
 		this.socket.onclose = (_) => {
 			this.disconnect();
-		}
+		};
 	}
 
 	async send(msg) {
